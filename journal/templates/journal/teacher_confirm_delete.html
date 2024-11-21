@@ -1,0 +1,16 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Usuń nauczyciela{% endblock %}
+
+{% block content %}
+
+<h1>Potwierdzenie usunięcia</h1>
+<p>Czy na pewno chcesz usunąć nauczyciela <strong>{{ teacher.first_name }} {{ teacher.last_name }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Tak, usuń</button>
+</form><br>
+<a href="{% url 'teacher_list' %}"><button>Anuluj</button></a>
+
+{% endblock %}

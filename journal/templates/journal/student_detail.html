@@ -1,0 +1,38 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Szczegóły ucznia{% endblock %}
+
+{% block content %}
+
+<h1>{{ student.first_name }} {{ student.last_name }}</h1>
+<p><strong>E-mail:</strong> {{ student.email }}</p>
+<p><strong>Klasa:</strong> {{ student.student_class }}</p>
+
+<h2>Oceny:</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Przedmiot</th>
+            <th>Oceny</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if student.grades.all %}
+            {% for subject, grades in grades_by_subject.items %}
+                <tr>
+                    <td>{{ subject }}</td>
+                    <td class="grades">
+                        {% for grade in grades %}
+                            <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <p>brak ocen</p>
+        {% endif %}
+    </tbody>
+</table><br>
+<a href="{% url 'grade_add' student.id %}"><button>Dodaj nową ocenę</button></a>
+
+{% endblock %}

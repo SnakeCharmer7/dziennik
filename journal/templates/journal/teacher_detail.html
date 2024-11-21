@@ -1,0 +1,24 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Szczegóły nauczyciela{% endblock %}
+
+{% block content %}
+
+<h1>{{ teacher.first_name }} {{ teacher.last_name }}</h1>
+<p><strong>E-mail:</strong> {{ teacher.email }}</p>
+<p><strong>Wychowawca klasy:</strong> 
+    {% if teacher.student_class_tutor %}
+        {{ teacher.student_class_tutor }}
+    {% else %}
+        brak
+    {% endif %}
+</p>
+<p><strong>Przedmiot:</strong>
+    {%if teacher.subject.name %} 
+        {{ teacher.subject.name }}
+    {% else %}
+        brak
+    {% endif %}
+</p>
+
+{% endblock %}

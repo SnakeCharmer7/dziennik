@@ -1,0 +1,25 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Klasy{% endblock %}
+
+{% block content %}
+<h1>Lista klas</h1>
+<table>
+    <thead>
+        <th>Nazwa klasy</th>
+        <th>Wychowawca</th>
+        <th>Liczba uczniów</th>
+    </thead>
+    <tbody>
+        {% for student_class in classes %}
+        <tr>
+            <td>{{ student_class.name }}</td>
+            <td>{{ student_class.form_tutor }}</td>
+            <td>
+                {{ student_class.students.count }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

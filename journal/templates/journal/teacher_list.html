@@ -1,0 +1,41 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Lista nauczycieli{% endblock %}
+
+{% block content %}
+<h1>Lista nauczycieli</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>E-mail</th>
+            <th>Przedmiot</th>
+            <th>Klasa wychowawcza</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for teacher in teachers %}
+        <tr>
+            <td>{{ teacher.first_name }}</td>
+            <td>{{ teacher.last_name }}</td>
+            <td>{{ teacher.email }}</td>
+            {% if teacher.subject.name %}
+                <td>{{ teacher.subject.name }}</td>
+            {% else %}
+                <td>Brak</td>
+            {% endif %}
+            {% if teacher.student_class_tutor %}
+                <td>{{ teacher.student_class_tutor.name }}</td>
+            {% else %}
+                <td>Brak</td>
+            {% endif %}
+            <td><a href="{% url 'teacher_detail' teacher.id %}"><button>szczegóły</button></a></td>
+            <td><a href="{% url 'teacher_edit' teacher.id %}"><button>edytuj</button></a></td>
+            <td><a href="{% url 'teacher_delete' teacher.id %}"><button>usuń</button></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table><br>
+<a href="{% url 'teacher_add' %}"><button>Dodaj nowego nauczyciela</button></a>
+{% endblock %}

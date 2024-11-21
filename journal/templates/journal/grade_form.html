@@ -1,0 +1,14 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Edytuj ucznia{% endblock %}
+
+{% block content %}
+
+<h1>Nowa ocena dla {{ view.student.first_name }} {{ view.student.last_name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Dodaj</button>
+</form>
+
+{% endblock %}
