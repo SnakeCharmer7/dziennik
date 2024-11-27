@@ -1,0 +1,14 @@
+{% extends 'journal/base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block content %}
+
+<h1>Rejestracja</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Zarejestruj</button>
+</form>
+
+{% endblock %}
