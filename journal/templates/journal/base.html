@@ -12,9 +12,22 @@
         <h1>Witaj w naszej szkole!</h1>
     </header>
     <nav>
-        <a href="{% url 'student_list' %}">Uczniowie</a>
-        <a href="{% url 'class_list' %}">Klasy</a>
-        <a href="{% url 'teacher_list' %}">Nauczyciele</a>
+        {% if user.is_authenticated and user.is_superuser %}
+            <a href="{% url 'student_list' %}">Uczniowie</a>
+            <a href="{% url 'class_list' %}">Klasy</a>
+            <a href="{% url 'teacher_list' %}">Nauczyciele</a>
+            <form method="POST" action="{% url 'logout' %}" id="logout-form" style="display: none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" onclick="document.getElementById('logout-form').submit();">Wyloguj się</a>
+        {% elif user.is_authenticated %}
+            <form method="POST" action="{% url 'logout' %}" id="logout-form" style="display: none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" onclick="document.getElementById('logout-form').submit();">Wyloguj się</a>
+        {% else %}
+            <a href="{% url 'login' %}">Zaloguj się</a>
+        {% endif %}
     </nav>
     <main>
         {% block content %}

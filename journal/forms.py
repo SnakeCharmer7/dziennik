@@ -1,10 +1,59 @@
 from django import forms
-from .models import Teacher, Student, Subject, StudentClass
+from django.contrib.auth.models import User
+from .models import Teacher, Student, Subject, StudentClass, Grade
+from django.core.validators import MaxValueValidator, MinValueValidator
+from PIL import Image
+
 
 class StudentForm(forms.ModelForm):
+    first_name = forms.CharField(label="Imię")
+    last_name = forms.CharField(label="Nazwisko")
+    profile_picture = forms.FileField(
+        required=False,
+        label="Zdjęcie profilowe",
+        error_messages={'invalid': "Zdjęcie musi być w formacie JPG, JPEG lub PNG."}
+    )
+    email = forms.EmailField(label="Adres e-mail")
+
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'student_class']
+        fields = ['first_name', 'last_name', 'email', 'student_class', 'profile_picture']
+
+    def clean_profile_picture(self):
+        picture = self.cleaned_data.get('profile_picture')
+        if picture:
+            try:
+                img = Image.open(picture)
+                img.verify()
+                if img.format not in ['JPEG', 'JPG', 'PNG']:
+                    raise forms.ValidationError("Zdjęcie musi być w formacie JPG, JPEG lub PNG")
+            except Exception:
+                raise forms.ValidationError("Przesłany plik nie jest obrazem.")
+        return picture
+
+
+class StudentCreateForm(StudentForm):
+    password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError("Uczeń z takim adresem email już istnieje.")
+        return email
+
+    def save(self, commit=True):
+        user = User.objects.create_user(
+            username=self.cleaned_data['email'],
+            password=self.cleaned_data['password']
+        )
+
+        student = super().save(commit=False)
+        student.user = user
+        
+        if commit:
+            student.save()
+        return student
+    
 
 class TeacherForm(forms.ModelForm):
     class Meta:

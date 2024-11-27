@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from .models import Teacher, Student, StudentClass, School, Subject, Grade
-from django.urls import reverse_lazy
-from .forms import TeacherForm
+from django.urls import reverse_lazy, reverse
+from .forms import TeacherForm, StudentForm, StudentCreateForm
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 class StudentListView(generic.ListView):
@@ -31,7 +32,7 @@ class StudentDetailView(generic.DetailView):
 
 class StudentEditView(generic.UpdateView):
     model = Student
-    fields = ['first_name', 'last_name', 'email', 'student_class']
+    form_class = StudentForm
     template_name = "journal/form.html"
     success_url = reverse_lazy('student_list')
 
@@ -44,9 +45,12 @@ class StudentDeleteView(generic.DeleteView):
 
 class StudentCreateView(generic.CreateView):
     model = Student
-    fields = ['first_name', 'last_name', 'email', 'student_class']
+    form_class = StudentCreateForm
     template_name = "journal/form.html"
     success_url = reverse_lazy('student_list')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 class GradeCreateView(generic.CreateView):
@@ -78,6 +82,13 @@ class GradeEditView(generic.UpdateView):
     def get_success_url(self):
         student = self.object.student
         return reverse_lazy('student_detail', kwargs={'pk': student.pk})
+
+
+def grade_delete(request, grade_id):
+    grade = get_object_or_404(Grade, id=grade_id)
+    student_id = grade.student.id
+    grade.delete()
+    return redirect(reverse('student_detail', kwargs={'pk': student_id}))
 
 
 class TeacherListView(generic.ListView):
@@ -157,3 +168,19 @@ class StudentClassDetailView(generic.ListView):
     model = StudentClass
     template_name = "journal/class_list.html"
     context_object_name = "classes"
+
+
+class IndexView(generic.ListView):
+    model = School
+    template_name = 'journal/index.html'
+    context_object_name = 'school'
+
+
+class CustomLoginView(LoginView):
+    template_name = 'journal/login.html'
+
+    def get_success_url(self):
+        if self.request.user.is_superuser:
+            return reverse_lazy("student_list")
+        else:
+            return reverse_lazy('student_detail', kwargs={'pk': self.request.user.student.pk})

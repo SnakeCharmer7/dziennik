@@ -4,11 +4,20 @@
 
 {% block content %}
 
-<h1>{{ student.first_name }} {{ student.last_name }}</h1>
+<div class="header2">
+    {% if student.profile_picture %}
+        <img src="{{ student.profile_picture.url }}" alt="Zdjęcie profilowe">
+        
+    {% else %}
+        <img src="/media/profile_pictures/student.png">
+    {% endif %}
+    {{ student.first_name }} {{ student.last_name }}
+</div>
 <p><strong>E-mail:</strong> {{ student.email }}</p>
 <p><strong>Klasa:</strong> {{ student.student_class }}</p>
 
 <h2>Oceny:</h2>
+{% if student.grades.all %}
 <table>
     <thead>
         <tr>
@@ -17,22 +26,28 @@
         </tr>
     </thead>
     <tbody>
-        {% if student.grades.all %}
             {% for subject, grades in grades_by_subject.items %}
                 <tr>
                     <td>{{ subject }}</td>
                     <td class="grades">
                         {% for grade in grades %}
-                            <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
+                            {% if user.is_superuser %}
+                                <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
+                            {% else %}
+                                <a class="grade">{{ grade.mark }}</a>
+                            {% endif %}
                         {% endfor %}
                     </td>
                 </tr>
             {% endfor %}
-        {% else %}
-            <p>brak ocen</p>
-        {% endif %}
     </tbody>
 </table><br>
+{% else %}
+    <p>brak ocen</p>
+{% endif %}
+
+{% if user.is_superuser %}
 <a href="{% url 'grade_add' student.id %}"><button>Dodaj nową ocenę</button></a>
+{% endif %}
 
 {% endblock %}
