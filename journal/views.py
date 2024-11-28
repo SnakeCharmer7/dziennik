@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from .models import Teacher, Student, StudentClass, School, Subject, Grade
 from django.urls import reverse_lazy, reverse
-from .forms import TeacherForm, StudentForm, StudentCreateForm
+from .forms import TeacherForm, StudentForm, StudentCreateForm, LoginForm
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -178,6 +178,7 @@ class IndexView(generic.ListView):
 
 class CustomLoginView(LoginView):
     template_name = 'journal/login.html'
+    form_class = LoginForm
 
     def get_success_url(self):
         if self.request.user.is_superuser:

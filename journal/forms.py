@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .models import Teacher, Student, Subject, StudentClass, Grade
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -56,6 +58,9 @@ class StudentCreateForm(StudentForm):
     
 
 class TeacherForm(forms.ModelForm):
+    first_name = forms.CharField(label="Imię")
+    last_name = forms.CharField(label="Nazwisko")
+    email = forms.EmailField(label="Adres e-mail")
     class Meta:
         model = Teacher
         fields = ['first_name', 'last_name', 'email']
@@ -102,3 +107,32 @@ class TeacherForm(forms.ModelForm):
             teacher.save()
 
         return teacher
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label="Nazwa/E-mail")
+    password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     username = cleaned_data.get('username')
+    #     password = cleaned_data.get('password')
+
+    #     if username and password:
+    #         user = authenticate(username=username, password=password)
+    #         if not user:
+    #             raise forms.ValidationError("Nieprawidłowe dane logowania.")
+    #     return cleaned_data
+
+    def clean(self):
+        super(LoginForm, self).clean()
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            self.user_cache = authenticate(self.request, username=username, password=password)
+            if not self.user_cache:
+                raise forms.ValidationError("Nieprawidłowe dane logowania.")
+        return cleaned_data
+
+
