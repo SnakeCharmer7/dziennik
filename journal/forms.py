@@ -113,26 +113,13 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(label="Nazwa/E-mail")
     password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     username = cleaned_data.get('username')
-    #     password = cleaned_data.get('password')
-
-    #     if username and password:
-    #         user = authenticate(username=username, password=password)
-    #         if not user:
-    #             raise forms.ValidationError("Nieprawidłowe dane logowania.")
-    #     return cleaned_data
-
     def clean(self):
-        super(LoginForm, self).clean()
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
 
         if username and password:
-            self.user_cache = authenticate(self.request, username=username, password=password)
-            if not self.user_cache:
+            user = authenticate(username=username, password=password)
+            if not user:
                 raise forms.ValidationError("Nieprawidłowe dane logowania.")
         return cleaned_data
-
-

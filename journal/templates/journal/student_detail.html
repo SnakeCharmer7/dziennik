@@ -26,21 +26,21 @@
         </tr>
     </thead>
     <tbody>
-            {% for subject, grades in grades_by_subject.items %}
-                <tr>
-                    <td>{{ subject }}</td>
-                    <td class="grades">
-                        {% for grade in grades %}
-                            {% if user.is_superuser %}
-                                <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
-                            {% else %}
-                                <a class="grade">{{ grade.mark }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% endfor %}
-    </tbody>
+    {% for subject, grades in grades_by_subject.items %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td class="grades">
+                {% for grade in grades %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
+                    {% else %}
+                        <a class="grade">{{ grade.mark }}</a>
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
 </table><br>
 {% else %}
     <p>brak ocen</p>
