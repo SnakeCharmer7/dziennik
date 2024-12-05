@@ -1,4 +1,18 @@
-body {
+footer a {
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+img {
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+}
+
+/* body {
     background-color: blanchedalmond;
     text-align: center;
     margin: 0;
@@ -92,4 +106,4 @@ article {
 
 ul {
     list-style-type: none;
-}
+} */

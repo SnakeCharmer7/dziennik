@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from .models import Teacher, Student, StudentClass, School, Subject, Grade
 from django.urls import reverse_lazy, reverse
-from .forms import TeacherForm, StudentForm, StudentCreateForm, LoginForm
+from .forms import TeacherForm, StudentForm, StudentCreateForm, LoginForm, GradeEditForm, GradeAddForm
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -33,7 +33,7 @@ class StudentDetailView(generic.DetailView):
 class StudentEditView(generic.UpdateView):
     model = Student
     form_class = StudentForm
-    template_name = "journal/form.html"
+    template_name = "journal/student_edit_form.html"
     success_url = reverse_lazy('student_list')
 
 
@@ -42,11 +42,16 @@ class StudentDeleteView(generic.DeleteView):
     template_name = "journal/student_confirm_delete.html"
     success_url = reverse_lazy('student_list')
 
+def student_delete(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    student.delete()
+    return redirect('student_list')
+
 
 class StudentCreateView(generic.CreateView):
     model = Student
     form_class = StudentCreateForm
-    template_name = "journal/form.html"
+    template_name = "journal/student_add_form.html"
     success_url = reverse_lazy('student_list')
 
     def form_valid(self, form):
@@ -55,7 +60,7 @@ class StudentCreateView(generic.CreateView):
 
 class GradeCreateView(generic.CreateView):
     model = Grade
-    fields = ['subject', 'mark']
+    form_class = GradeAddForm
     template_name = "journal/grade_form.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -72,7 +77,7 @@ class GradeCreateView(generic.CreateView):
 
 class GradeEditView(generic.UpdateView):
     model = Grade
-    fields = ['mark']
+    form_class = GradeEditForm
     template_name = 'journal/grade_edit.html'
 
     def get_object(self, queryset=None):
@@ -106,7 +111,7 @@ class TeacherDetailView(generic.DetailView):
 class TeacherCreateView(generic.CreateView):
     model = Teacher
     form_class = TeacherForm
-    template_name = "journal/form.html"
+    template_name = "journal/teacher_add_form.html"
     success_url = reverse_lazy('teacher_list')
 
     def form_valid(self, form):
@@ -121,7 +126,7 @@ class TeacherCreateView(generic.CreateView):
 class TeacherEditView(generic.UpdateView):
     model = Teacher
     form_class = TeacherForm
-    template_name = "journal/form.html"
+    template_name = "journal/teacher_edit_form.html"
     success_url = reverse_lazy('teacher_list')
 
     def get_form(self, *args, **kwargs):

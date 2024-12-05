@@ -4,50 +4,54 @@
 
 {% block content %}
 
-<div class="header2">
+<div class="p-3">
+<div class="container d-flex justify-content-center align-items-center card-title mb-0">
     {% if student.profile_picture %}
         <img src="{{ student.profile_picture.url }}" alt="Zdjęcie profilowe">
-        
     {% else %}
         <img src="/media/profile_pictures/student.png">
     {% endif %}
-    {{ student.first_name }} {{ student.last_name }}
+    <h2>{{ student.first_name }} {{ student.last_name }}</h2>
 </div>
-<p><strong>E-mail:</strong> {{ student.email }}</p>
-<p><strong>Klasa:</strong> {{ student.student_class }}</p>
+<div class="card-body">
+    <div class="container text-start p-2">
+        <p><strong>E-mail:</strong> {{ student.email }}</p>
+        <p><strong>Klasa:</strong> {{ student.student_class }}</p>
+    </div>
 
-<h2>Oceny:</h2>
-{% if student.grades.all %}
-<table>
-    <thead>
-        <tr>
-            <th>Przedmiot</th>
-            <th>Oceny</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for subject, grades in grades_by_subject.items %}
-        <tr>
-            <td>{{ subject }}</td>
-            <td class="grades">
-                {% for grade in grades %}
-                    {% if user.is_superuser %}
-                        <a href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
-                    {% else %}
-                        <a class="grade">{{ grade.mark }}</a>
-                    {% endif %}
-                {% endfor %}
-            </td>
-        </tr>
-    {% endfor %}
-</tbody>
-</table><br>
-{% else %}
-    <p>brak ocen</p>
-{% endif %}
+    {% if student.grades.all %}
+    <table class="table">
+        <thead class="table-primary">
+            <tr>
+                <th>Przedmiot</th>
+                <th>Oceny</th>
+            </tr>
+        </thead>
+        <tbody class="table-light">
+        {% for subject, grades in grades_by_subject.items %}
+            <tr>
+                <td>{{ subject }}:</td>
+                <td class="text-start">
+                    {% for grade in grades %}
+                        {% if user.is_superuser %}
+                            <a class="btn btn-primary btn-sm" href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
+                        {% else %}
+                            <a class="btn btn-primary btn-sm">{{ grade.mark }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table><br>
+    {% else %}
+        <p>brak ocen</p>
+    {% endif %}
 
-{% if user.is_superuser %}
-<a href="{% url 'grade_add' student.id %}"><button>Dodaj nową ocenę</button></a>
-{% endif %}
+    {% if user.is_superuser %}
+    <a class="btn btn-secondary" href="{% url 'grade_add' student.id %}">Dodaj nową ocenę</a>
+    {% endif %}
+</div>
+</div>
 
 {% endblock %}

@@ -3,20 +3,22 @@
 {% block title %}Lista nauczycieli{% endblock %}
 
 {% block content %}
-<h1>Lista nauczycieli</h1>
-<table>
+<h1 class="card-header">Lista nauczycieli</h1>
+<div class="card-body">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>E-mail</th>
             <th>Przedmiot</th>
             <th>Klasa wychowawcza</th>
+            <th colspan="3">Opcje</th>
         </tr>
     </thead>
     <tbody>
         {% for teacher in teachers %}
-        <tr>
+        <tr class="table-light align-middle">
             <td>{{ teacher.first_name }}</td>
             <td>{{ teacher.last_name }}</td>
             <td>{{ teacher.email }}</td>
@@ -30,12 +32,13 @@
             {% else %}
                 <td>Brak</td>
             {% endif %}
-            <td><a href="{% url 'teacher_detail' teacher.id %}"><button>szczegóły</button></a></td>
-            <td><a href="{% url 'teacher_edit' teacher.id %}"><button>edytuj</button></a></td>
-            <td><a href="{% url 'teacher_delete' teacher.id %}"><button>usuń</button></a></td>
+            <td><a class="btn btn-info" href="{% url 'teacher_detail' teacher.id %}">Szczegóły</a></td>
+            <td><a class="btn btn-warning" href="{% url 'teacher_edit' teacher.id %}">Edytuj</a></td>
+            <td><a class="btn btn-danger" href="{% url 'teacher_delete' teacher.id %}">Usuń</a></td>
         </tr>
         {% endfor %}
     </tbody>
-</table><br>
-<a href="{% url 'teacher_add' %}"><button>Dodaj nowego nauczyciela</button></a>
+</table>
+<a class="btn btn-secondary" href="{% url 'teacher_add' %}">Dodaj nowego nauczyciela</a>
+</div>
 {% endblock %}

@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Logowanie</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'journal/style.css' %}">
+    <link href="{% static 'journal/style.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <h1>Witaj w naszej szkole!</h1>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <header class="bg-primary text-white text-center py-4">
+        <h1 class="mb-0">Witaj w naszej szkole!</h1>
     </header>
-    <nav>
-        <a href="{% url 'index' %}">Strona główna</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+                <img class="me-2" src="{% static 'journal/logo-white.jpg' %}" height="50" width="50">
+                <span>Nasza Szkoła</span>
+            </a>
+        </div>
     </nav>
-    <main>
-        <h1>Logowanie</h1>
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Zaloguj</button>
-        </form>
+    <main class="flex-grow-1 d-flex justify-content-center text-center my-5">
+        <div class="container w-auto">
+            <div class="card h-auto shadow-sm">
+                <h1 class="card-header p-3">Logowanie</h1>
+                <div class="card-body">
+                    <form method="post" action="{% url 'login' %}" class="card-text p-2">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="btn btn-primary" type="submit">Zaloguj</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
+    <footer class="bg-dark d-flex justify-content-between text-white text-center align-items-center py-3 td-0">
+        <p class="mb-1">© 2024 Nasza Szkoła. Wykonana przez: <a href="https://github.com/SnakeCharmer7" class="text-white">Szymon Company</a></p>
+        <div>
+            <a href="https://www.facebook.com/" target="_blank" class="text-white me-3">
+                <i class="bi bi-facebook"></i> Facebook
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="text-white me-3">
+                <i class="bi bi-instagram"></i> Instagram
+            </a>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 </html>
 

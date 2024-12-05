@@ -4,11 +4,13 @@
 
 {% block content %}
 
-<h1>Nowa ocena dla {{ view.student.first_name }} {{ view.student.last_name }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Dodaj</button>
-</form>
+<h1 class="card-header">Nowa ocena dla {{ view.student.first_name }} {{ view.student.last_name }}</h1>
+<div class="card-body">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Dodaj</button>
+    </form>
+</div>
 
 {% endblock %}

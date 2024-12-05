@@ -4,10 +4,13 @@
 
 {% block content %}
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Zapisz</button>
-</form>
+<h1 class="card-header">{% block h1 %}{% endblock %}</h1>
+<div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Zapisz</button>
+    </form>
+</div>
 
 {% endblock %}

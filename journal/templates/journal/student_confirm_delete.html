@@ -4,13 +4,15 @@
 
 {% block content %}
 
-<h1>Potwierdzenie usunięcia</h1>
-<p>Czy na pewno chcesz usunąć ucznia <strong>{{ student.first_name }} {{ student.last_name }}</strong>?</p>
+<h1 class="card-header">Potwierdzenie usunięcia</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Tak, usuń</button>
-</form><br>
-<a href="{% url 'student_list' %}"><button>Anuluj</button></a>
+<div class="card-body">
+    <p>Czy na pewno chcesz usunąć ucznia <strong>{{ student.first_name }} {{ student.last_name }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-success mb-1" type="submit">Tak, usuń</button>
+    </form>
+    <a class="btn btn-danger" href="{% url 'student_list' %}">Anuluj</a>
+</div>
 
 {% endblock %}

@@ -8,14 +8,28 @@ from PIL import Image
 
 
 class StudentForm(forms.ModelForm):
-    first_name = forms.CharField(label="Imię")
-    last_name = forms.CharField(label="Nazwisko")
+    first_name = forms.CharField(
+        label="Imię", 
+        widget=forms.TextInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
+    last_name = forms.CharField(
+        label="Nazwisko", 
+        widget=forms.TextInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
+    email = forms.EmailField(
+        label="Adres e-mail",
+        widget=forms.EmailInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
     profile_picture = forms.FileField(
         required=False,
         label="Zdjęcie profilowe",
-        error_messages={'invalid': "Zdjęcie musi być w formacie JPG, JPEG lub PNG."}
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
     )
-    email = forms.EmailField(label="Adres e-mail")
+    student_class = forms.ModelChoiceField(
+        label="Klasa", 
+        queryset=StudentClass.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
+    )
 
     class Meta:
         model = Student
@@ -35,7 +49,10 @@ class StudentForm(forms.ModelForm):
 
 
 class StudentCreateForm(StudentForm):
-    password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
+    password = forms.CharField(
+        label="Hasło", 
+        widget=forms.PasswordInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -58,9 +75,18 @@ class StudentCreateForm(StudentForm):
     
 
 class TeacherForm(forms.ModelForm):
-    first_name = forms.CharField(label="Imię")
-    last_name = forms.CharField(label="Nazwisko")
-    email = forms.EmailField(label="Adres e-mail")
+    first_name = forms.CharField(
+        label="Imię", 
+        widget=forms.TextInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
+    last_name = forms.CharField(
+        label="Nazwisko", 
+        widget=forms.TextInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
+    email = forms.EmailField(
+        label="Adres e-mail",
+        widget=forms.EmailInput(attrs={'class': 'form-control w-auto d-inline'})
+    )
     class Meta:
         model = Teacher
         fields = ['first_name', 'last_name', 'email']
@@ -68,13 +94,15 @@ class TeacherForm(forms.ModelForm):
     subject = forms.ModelChoiceField(
         queryset=Subject.objects.all(),
         required=False,
-        label="Przedmiot"
+        label="Przedmiot",
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
     )
 
     student_class = forms.ModelChoiceField(
         queryset=StudentClass.objects.all(),
         required=False,
-        label="Klasa wychowawcza"
+        label="Klasa wychowawcza",
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
     )
     
     def clean_student_class(self):
@@ -110,8 +138,8 @@ class TeacherForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label="Nazwa/E-mail")
-    password = forms.CharField(widget=forms.PasswordInput, label="Hasło")
+    username = forms.CharField(label="Nazwa/E-mail", widget=forms.TextInput(attrs={'class': 'form-control w-auto d-inline'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control w-auto d-inline'}), label="Hasło")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -123,3 +151,31 @@ class LoginForm(AuthenticationForm):
             if not user:
                 raise forms.ValidationError("Nieprawidłowe dane logowania.")
         return cleaned_data
+
+
+class GradeEditForm(forms.ModelForm):
+    mark = forms.ChoiceField(
+        label="Ocena", 
+        choices=Grade.MARKS,
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
+    )
+    class Meta:
+        model = Grade
+        fields = ['mark']
+
+
+class GradeAddForm(forms.ModelForm):
+    mark = forms.ChoiceField(
+        label="Ocena", 
+        choices=Grade.MARKS,
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
+    )
+    subject = forms.ModelChoiceField(
+        label="Przedmiot", 
+        queryset=Subject.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-select w-auto d-inline'})
+    )
+
+    class Meta:
+        model = Grade
+        fields = ['mark', 'subject']
