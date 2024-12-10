@@ -33,7 +33,7 @@
                 <td>{{ subject }}:</td>
                 <td class="text-start">
                     {% for grade in grades %}
-                        {% if user.is_superuser %}
+                        {% if user.is_superuser or user.teacher %}
                             <a class="btn btn-primary btn-sm" href="{% url 'grade_edit' pk=student.pk grade_id=grade.pk %}" class="grade">{{ grade.mark }}</a>
                         {% else %}
                             <a class="btn btn-primary btn-sm">{{ grade.mark }}</a>
@@ -48,8 +48,8 @@
         <p>brak ocen</p>
     {% endif %}
 
-    {% if user.is_superuser %}
-    <a class="btn btn-secondary" href="{% url 'grade_add' student.id %}">Dodaj nową ocenę</a>
+    {% if user.is_superuser or user.teacher %}
+        <a class="btn btn-secondary" href="{% url 'grade_add' student.id %}">Dodaj nową ocenę</a>
     {% endif %}
 </div>
 </div>

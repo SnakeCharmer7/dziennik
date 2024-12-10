@@ -24,8 +24,10 @@
                 <td>{{ student.email }}</td>
                 <td>{{ student.student_class.name }}</td>
                 <td><a class="btn btn-info" href="{% url 'student_detail' student.id %}">Szczegóły</a></td>
-                <td><a class="btn btn-warning" href="{% url 'student_edit' student.id %}">Edytuj</a></td>
-                <td><a class="btn btn-danger" href="{% url 'student_delete_class' student.id %}">Usuń</a></td>
+                {% if user.is_superuser %}
+                    <td><a class="btn btn-warning" href="{% url 'student_edit' student.id %}">Edytuj</a></td>
+                    <td><a class="btn btn-danger" href="{% url 'student_delete_class' student.id %}">Usuń</a></td>
+                {% endif %}
                 <!-- <td><a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Usuń</a></td>
                 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
                     <div class="modal-dialog">

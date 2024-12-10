@@ -20,16 +20,19 @@
                 <span>Nasza Szkoła</span>
             </a>
             <div class="nav col-md-auto justify-content-center me-5">
-                {% if user.is_authenticated and user.is_superuser %}
-                    <a class="nav-link px-2" href="{% url 'student_list' %}">Uczniowie</a>
-                    <a class="nav-link px-2" href="{% url 'class_list' %}">Klasy</a>
-                    <a class="nav-link px-2" href="{% url 'teacher_list' %}">Nauczyciele</a>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a class="nav-link px-2" href="{% url 'student_list' %}">Uczniowie</a>
+                        <a class="nav-link px-2" href="{% url 'class_list' %}">Klasy</a>
+                        <a class="nav-link px-2" href="{% url 'teacher_list' %}">Nauczyciele</a>
+                    {% elif user.student %}
+                        <a class="nav-link px-2" href="{% url 'student_detail' user.student.pk %}">Mój profil</a>
+                    {% elif user.teacher %}
+                        <a class="nav-link px-2" href="{% url 'teacher_detail' user.teacher.pk %}">Mój profil</a>
+                        <a class="nav-link px-2" href="{% url 'student_list' %}">Lista uczniów</a>
+                        <a class="nav-link px-2" href="{% url 'class_list' %}">Lista klas</a>
+                    {% endif %}
             </div>
-                <form method="POST" action="{% url 'logout' %}" id="logout-form" style="display: none;">
-                    {% csrf_token %}
-                </form>
-                <a href="#" class="btn btn-primary" onclick="document.getElementById('logout-form').submit();">Wyloguj się</a>
-            {% elif user.is_authenticated %}
                 <form method="POST" action="{% url 'logout' %}" id="logout-form" style="display: none;">
                     {% csrf_token %}
                 </form>
@@ -46,6 +49,9 @@
 
                 {% endblock %}
             </div>
+            {% block article %}
+
+            {% endblock %}
         </div>
     </main>
     <footer class="bg-dark d-flex justify-content-between text-white text-center align-items-center py-3 td-0">

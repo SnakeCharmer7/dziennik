@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=50, unique=True)
@@ -30,12 +31,12 @@ class StudentClass(models.Model):
 
 
 class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=50, unique=True)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE, related_name='students')
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

@@ -4,6 +4,13 @@ from .models import Teacher, Student, StudentClass, School, Subject, Grade
 from django.urls import reverse_lazy, reverse
 from .forms import TeacherForm, StudentForm, StudentCreateForm, LoginForm, GradeEditForm, GradeAddForm
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
+class IndexView(generic.ListView):
+    model = School
+    template_name = 'journal/index.html'
+    context_object_name = 'school'
 
 
 class StudentListView(generic.ListView):
@@ -96,10 +103,13 @@ def grade_delete(request, grade_id):
     return redirect(reverse('student_detail', kwargs={'pk': student_id}))
 
 
-class TeacherListView(generic.ListView):
+class TeacherListView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
     model = Teacher
     template_name = "journal/teacher_list.html"
     context_object_name = "teachers"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class TeacherDetailView(generic.DetailView):
@@ -107,8 +117,11 @@ class TeacherDetailView(generic.DetailView):
     template_name = "journal/teacher_detail.html"
     context_object_name = "teacher"
 
+    def test_func(self):
+        return hasattr(self.request.user, 'student')
 
-class TeacherCreateView(generic.CreateView):
+
+class TeacherCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Teacher
     form_class = TeacherForm
     template_name = "journal/teacher_add_form.html"
@@ -121,9 +134,12 @@ class TeacherCreateView(generic.CreateView):
             subject.save()
 
         return super().form_valid(form)
+    
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
-class TeacherEditView(generic.UpdateView):
+class TeacherEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Teacher
     form_class = TeacherForm
     template_name = "journal/teacher_edit_form.html"
@@ -161,12 +177,18 @@ class TeacherEditView(generic.UpdateView):
             new_class.save()
 
         return super().form_valid(form)
+    
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
-class TeacherDeleteView(generic.DeleteView):
+class TeacherDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Teacher
     template_name = "journal/teacher_confirm_delete.html"
     success_url = reverse_lazy('teacher_list')
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class StudentClassDetailView(generic.ListView):
@@ -175,18 +197,8 @@ class StudentClassDetailView(generic.ListView):
     context_object_name = "classes"
 
 
-class IndexView(generic.ListView):
-    model = School
-    template_name = 'journal/index.html'
-    context_object_name = 'school'
-
-
 class CustomLoginView(LoginView):
     template_name = 'journal/login.html'
     form_class = LoginForm
 
-    def get_success_url(self):
-        if self.request.user.is_superuser:
-            return reverse_lazy("student_list")
-        else:
-            return reverse_lazy('student_detail', kwargs={'pk': self.request.user.student.pk})
+    
