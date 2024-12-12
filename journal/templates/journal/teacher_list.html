@@ -6,8 +6,8 @@
 <h1 class="card-header">Lista nauczycieli</h1>
 <div class="card-body">
 <table class="table table-hover">
-    <thead>
-        <tr class="table-primary">
+    <thead class="table-primary">
+        <tr>
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>E-mail</th>
@@ -16,9 +16,9 @@
             <th colspan="3">Opcje</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-light align-middle">
         {% for teacher in teachers %}
-        <tr class="table-light align-middle">
+        <tr>
             <td>{{ teacher.first_name }}</td>
             <td>{{ teacher.last_name }}</td>
             <td>{{ teacher.email }}</td>
@@ -33,12 +33,16 @@
                 <td>Brak</td>
             {% endif %}
             <td><a class="btn btn-info" href="{% url 'teacher_detail' teacher.id %}">Szczegóły</a></td>
-            <td><a class="btn btn-warning" href="{% url 'teacher_edit' teacher.id %}">Edytuj</a></td>
-            <td><a class="btn btn-danger" href="{% url 'teacher_delete' teacher.id %}">Usuń</a></td>
+            {% if user.is_superuser %}
+                <td><a class="btn btn-warning" href="{% url 'teacher_edit' teacher.id %}">Edytuj</a></td>
+                <td><a class="btn btn-danger" href="{% url 'teacher_delete' teacher.id %}">Usuń</a></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<a class="btn btn-secondary" href="{% url 'teacher_add' %}">Dodaj nowego nauczyciela</a>
+{% if user.is_superuser %}
+    <a class="btn btn-secondary" href="{% url 'teacher_add' %}">Dodaj nowego nauczyciela</a>
+{% endif %}
 </div>
 {% endblock %}

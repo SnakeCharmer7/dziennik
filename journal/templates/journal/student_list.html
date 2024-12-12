@@ -50,7 +50,9 @@
             {% endfor %}
         </tbody>
     </table>
-    <a class="btn btn-secondary" href="{% url 'student_add' %}">Dodaj nowego ucznia</a>
+    {% if user.is_superuser %}
+        <a class="btn btn-secondary" href="{% url 'student_add' %}">Dodaj nowego ucznia</a>
+    {% endif %}
 </div>
 
 {% endblock %}

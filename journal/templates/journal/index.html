@@ -1,75 +1,4 @@
 {% extends 'journal/base.html' %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    {% load static %}
-    <link href="{% static 'journal/style.css' %}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <header class="bg-primary text-white text-center py-4">
-        <h1 class="mb-0">Witaj w naszej szkole!</h1>
-    </header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
-                <img class="me-2" src="{% static 'journal/logo-white.jpg' %}" height="50" width="50">
-                <span>Nasza Szkoła</span>
-            </a>
-            <a class="btn btn-outline-primary" href="{% url 'login' %}">Zaloguj się</a>
-        </div>
-    </nav>
-    <main class="container my-5">
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                {% for s in school %}
-                <h2 class="card-title">{{ s.name }}</h2>
-                <p class="card-text">Dyrektor: {{ s.head_teacher }}</p>
-                {% endfor %}
-            </div>
-        </div>
-        <article class="mt-5">
-            <h1>Aktualności</h1>
-            <hr>
-            <h2 class="mb-3">Nowy Rok Szkolny 2024/2025 rozpoczęty!</h2>
-            <p class="lead">W dniu 2 września uczniowie i nauczyciele Zespołu Szkół Nr 1 im. Adama Mickiewicza w Białymstoku powitali nowy rok szkolny. Uroczystość inaugurującą obchodziła cała społeczność szkolna. Życzymy wszystkim uczniom wielu sukcesów i niezapomnianych chwil w tym roku!</p>
-            <hr>
-            <h2 class="mb-3">Dzień Patrona Szkoły</h2>
-            <p class="lead">Dnia 18 listopada w naszej szkole odbyły się obchody Dnia Patrona, Adama Mickiewicza. W ramach wydarzenia uczniowie zaprezentowali przygotowane referaty, prezentacje oraz występy artystyczne, nawiązujące do twórczości wieszcza narodowego. Była to doskonała okazja do uczczenia pamięci autora „Pana Tadeusza”.</p>
-            <hr>
-            <h2 class="mb-3">Warsztaty Ekologiczne</h2>
-            <p class="lead">W dniach 20-21 listopada odbyły się warsztaty ekologiczne zorganizowane przez naszą szkołę. Uczniowie wzięli udział w zajęciach dotyczących ochrony środowiska, recyklingu i działań na rzecz zrównoważonego rozwoju. Warsztaty cieszyły się dużym zainteresowaniem i były świetną okazją do poszerzenia wiedzy na temat ochrony naszej planety.</p>
-            <hr>
-            <h2 class="mb-3">Zawody Sportowe - Podwójne Złoto!</h2>
-            <p class="lead">Z radością informujemy, że nasi uczniowie zdobyli złote medale w Mistrzostwach Województwa w Piłce Siatkowej i Koszykówce! Gratulujemy naszym drużynom za wyjątkowy wysiłek i zaangażowanie. Trzymamy kciuki za kolejne sukcesy!</p>
-            <hr>
-            <h2 class="mb-3">Szkolny Konkurs Recytatorski</h2>
-            <p class="lead">W dniu 22 listopada odbył się Szkolny Konkurs Recytatorski, w którym udział wzięli uczniowie wszystkich klas. Jury miało trudne zadanie, ponieważ poziom recytacji był bardzo wysoki. Zwycięzcy będą reprezentować naszą szkołę w wojewódzkim etapie konkursu.</p>
-        </article>
-    </main>
-    <footer class="bg-dark d-flex justify-content-between text-white text-center align-items-center py-3 td-0">
-        <p class="mb-1">© 2024 Nasza Szkoła. Wykonana przez: <a href="https://github.com/SnakeCharmer7" class="text-white">Szymon Company</a></p>
-        <div>
-            <a href="https://www.facebook.com/" target="_blank" class="text-white me-3">
-                <i class="bi bi-facebook"></i> Facebook
-            </a>
-            <a href="https://www.instagram.com/" target="_blank" class="text-white me-3">
-                <i class="bi bi-instagram"></i> Instagram
-            </a>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-</body>
-</html> -->
-
-
-
 
 {% block title %}Strona główna{% endblock %}
 
@@ -86,8 +15,8 @@
 
 {% block article %}
 
-<article class="mt-5">
-    <h1>Aktualności</h1>
+<article class="mt-5 text-start">
+    <h1 class="fw-bold">Aktualności</h1>
     <hr>
     <h2 class="mb-3">Nowy Rok Szkolny 2024/2025 rozpoczęty!</h2>
     <p class="lead">W dniu 2 września uczniowie i nauczyciele Zespołu Szkół Nr 1 im. Adama Mickiewicza w Białymstoku powitali nowy rok szkolny. Uroczystość inaugurującą obchodziła cała społeczność szkolna. Życzymy wszystkim uczniom wielu sukcesów i niezapomnianych chwil w tym roku!</p>

@@ -21,7 +21,7 @@
             </a>
             <div class="nav col-md-auto justify-content-center me-5">
                 {% if user.is_authenticated %}
-                    {% if user.is_superuser %}
+                    {% if user.is_superuser or user.is_staff %}
                         <a class="nav-link px-2" href="{% url 'student_list' %}">Uczniowie</a>
                         <a class="nav-link px-2" href="{% url 'class_list' %}">Klasy</a>
                         <a class="nav-link px-2" href="{% url 'teacher_list' %}">Nauczyciele</a>

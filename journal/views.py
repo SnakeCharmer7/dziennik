@@ -49,6 +49,7 @@ class StudentDeleteView(generic.DeleteView):
     template_name = "journal/student_confirm_delete.html"
     success_url = reverse_lazy('student_list')
 
+
 def student_delete(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     student.delete()
@@ -103,13 +104,10 @@ def grade_delete(request, grade_id):
     return redirect(reverse('student_detail', kwargs={'pk': student_id}))
 
 
-class TeacherListView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
+class TeacherListView(LoginRequiredMixin, generic.ListView):
     model = Teacher
     template_name = "journal/teacher_list.html"
     context_object_name = "teachers"
-
-    def test_func(self):
-        return self.request.user.is_superuser
 
 
 class TeacherDetailView(generic.DetailView):
@@ -117,11 +115,8 @@ class TeacherDetailView(generic.DetailView):
     template_name = "journal/teacher_detail.html"
     context_object_name = "teacher"
 
-    def test_func(self):
-        return hasattr(self.request.user, 'student')
 
-
-class TeacherCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+class TeacherCreateView(LoginRequiredMixin, generic.CreateView):
     model = Teacher
     form_class = TeacherForm
     template_name = "journal/teacher_add_form.html"
@@ -134,12 +129,9 @@ class TeacherCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
             subject.save()
 
         return super().form_valid(form)
-    
-    def test_func(self):
-        return self.request.user.is_superuser
 
 
-class TeacherEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+class TeacherEditView(LoginRequiredMixin, generic.UpdateView):
     model = Teacher
     form_class = TeacherForm
     template_name = "journal/teacher_edit_form.html"
@@ -177,18 +169,12 @@ class TeacherEditView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateVie
             new_class.save()
 
         return super().form_valid(form)
-    
-    def test_func(self):
-        return self.request.user.is_superuser
 
 
-class TeacherDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+class TeacherDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Teacher
     template_name = "journal/teacher_confirm_delete.html"
     success_url = reverse_lazy('teacher_list')
-
-    def test_func(self):
-        return self.request.user.is_superuser
 
 
 class StudentClassDetailView(generic.ListView):

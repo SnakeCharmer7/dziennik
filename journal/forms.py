@@ -63,7 +63,9 @@ class StudentCreateForm(StudentForm):
     def save(self, commit=True):
         user = User.objects.create_user(
             username=self.cleaned_data['email'],
-            password=self.cleaned_data['password']
+            password=self.cleaned_data['password'],
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name']
         )
 
         student = super().save(commit=False)
